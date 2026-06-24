@@ -1,0 +1,23 @@
+﻿const { chromium } = require('playwright');
+const dotenv = require('dotenv');
+dotenv.config();
+(async () => {
+  const b = await chromium.launch({ headless: true, slowMo: 200 });
+  const ctx = await b.newContext({ ignoreHTTPSErrors: true });
+  const p = await ctx.newPage();
+  p.on('response', r => { if (r.url().includes('login')) console.log('RESP:', r.status(), r.url()); });
+  await p.goto('https://huellasdelcatatumbo.com/login', { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await p.waitForTimeout(2000);
+  await p.locator('input[name=username]').fill('super_admin');
+  await p.locator('input[type=password]').fill(process.env.ADMIN_PASS || 'beta9023#');
+  await p.locator('#login_btn').click();
+  await p.waitForTimeout(5000);
+  const url = p.url();
+  const html = await p.content();
+  const fs = require('fs');
+  fs.writeFileSync('scripts/output/after-login-full.html', html);
+  console.log('FINAL_URL:', url);
+  const errMatch = html.match(/<div[^>]*class="[^"]*alert[^"]*"[^>]*>([\s\S]{0,300}?)<\/div>/i);
+  if (errMatch) console.log('ERROR_DIV:', errMatch[1].replace(/<[^>]+>/g,'').trim());
+  await b.close();
+})().catch(e => { console.error('FATAL:', e.message); process.exit(1); });

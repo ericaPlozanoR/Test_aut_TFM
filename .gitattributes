@@ -1,0 +1,20 @@
+# Normalizar saltos de línea automáticamente para todos los OS
+* text=auto
+
+# TypeScript / JavaScript → LF
+*.ts text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+
+# Gherkin features → LF
+*.feature text eol=lf
+
+# Documentación → LF
+*.md text eol=lf
+*.txt text eol=lf
+
+# Binarios (no tocar)
+*.png binary
+*.webm binary
+*.jpg binary
+*.gif binary

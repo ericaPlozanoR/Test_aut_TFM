@@ -1,0 +1,37 @@
+# Dependencias
+node_modules/
+
+# TypeScript compilado
+dist/
+
+# Variables de entorno (contienen contraseñas — nunca versionar)
+.env
+.env.local
+.env.*.local
+
+# Reportes generados automáticamente (se regeneran con npm test)
+reports/*.html
+reports/*.json
+reports/html-report/
+reports/screenshots/
+
+# Evidencias de ejecución (screenshots y videos — pueden ser GB)
+test-results/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/settings.json
+.idea/
+
+# Playwright state
+playwright/.auth/
+
+# Salidas de scripts de diagnóstico (temporales)
+scripts/output/

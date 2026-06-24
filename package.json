@@ -1,0 +1,46 @@
+{
+  "name": "test_aut_tfm",
+  "version": "1.0.0",
+  "description": "Framework de pruebas automatizadas – Huellas del Catatumbo (TFM UNIR)",
+  "author": "TFM UNIR",
+  "license": "ISC",
+  "scripts": {
+    "test": "cucumber-js",
+    "test:smoke": "cucumber-js --profile smoke",
+    "test:login": "cucumber-js src/features/autenticacion.feature",
+    "test:donaciones": "cucumber-js src/features/donaciones.feature",
+    "test:trazabilidad": "cucumber-js src/features/trazabilidad.feature",
+    "test:usuarios": "cucumber-js src/features/gestion_usuarios.feature",
+    "test:headed": "cross-env HEADLESS=false cucumber-js",
+    "test:debug": "cross-env HEADLESS=false SLOWMO=500 cucumber-js",
+    "report": "ts-node src/support/generate-report.ts",
+    "report:open": "start reports/html-report/index.html",
+    "report:simple": "start reports/cucumber-report.html",
+    "evidencias:abrir": "start test-results/evidencias",
+    "evidencias:limpiar": "rimraf test-results/evidencias",
+    "test:y:reporte": "cucumber-js && start reports/html-report/index.html",
+    "install:browsers": "playwright install chromium",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "playwright",
+    "cucumber",
+    "typescript",
+    "pom",
+    "e2e"
+  ],
+  "devDependencies": {
+    "@cucumber/cucumber": "^12.9.0",
+    "@cucumber/pretty-formatter": "^4.0.0",
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.0.0",
+    "cross-env": "^10.1.0",
+    "cucumber-html-reporter": "^7.2.0",
+    "dotenv": "^17.4.2",
+    "multiple-cucumber-html-reporter": "^3.10.0",
+    "playwright": "^1.61.1",
+    "rimraf": "^6.1.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}
