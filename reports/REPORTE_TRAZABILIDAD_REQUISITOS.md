@@ -13,28 +13,27 @@
 
 ## 1. Resumen ejecutivo
 
-| Feature | Escenarios | @smoke | Resultado |
-|---|---|---|---|
-| Autenticación de usuarios | 13 | 6 | ✅ 13/13 |
-| Gestión de usuarios | 10 | 3 | ✅ 10/10 |
-| Portal del usuario donante | 14 | 8 | ✅ 14/14 |
-| Informe y consulta de donaciones | 10 | 3 | ✅ 10/10 |
-| Trazabilidad del ciclo de vida | 10 | 3 | ✅ 10/10 |
-| **TOTAL** | **57** | **23** | **✅ 57/57** |
+| Feature | Requisito (RF-TRAN) | Escenarios | @smoke | Resultado |
+|---|---|---|---|---|
+| Autenticación de usuarios | RF-TRAN-01 | 13 | 6 | ✅ 13/13 |
+| Gestión de usuarios | RF-TRAN-01 | 10 | 3 | ✅ 10/10 |
+| Portal del usuario donante | RF-TRAN-06 | 14 | 8 | ✅ 14/14 |
+| Informe y consulta de donaciones | RF-TRAN-07 | 10 | 3 | ✅ 10/10 |
+| Trazabilidad del ciclo de vida | RF-TRAN-04 | 10 | 3 | ✅ 10/10 |
+| **TOTAL** | | **57** | **23** | **✅ 57/57** |
 
 ---
 
-## 2. Matriz de trazabilidad: Features → Historias de Usuario → Casos de Uso
+## 2. Matriz de trazabilidad: Features → Requisitos → Casos de Uso
 
 ### 2.1 Feature: Autenticación de usuarios (`autenticacion.feature`)
 
-**Historia de Usuario (HU-01):**  
+**Requisito funcional:** RF-TRAN-01 — Gestión de Autenticación y Roles  
+**Historia de Usuario:** HU-01  
 > "Como usuario registrado en la Fundación Huellas del Catatumbo, quiero iniciar sesión con mis credenciales para acceder a las funcionalidades correspondientes a mi rol."
 
-**Casos de Uso cubiertos:** CU-01
-
 **Descripción general:**  
-Esta feature valida el mecanismo de autenticación de la plataforma para todos los tipos de usuario: Administrador, Director, Coordinador, Voluntario y Usuario donante. Cubre tanto los flujos exitosos como los negativos (credenciales incorrectas, campos vacíos, intentos de acceso sin autenticación) y verifica que cada rol accede únicamente a los módulos que le corresponden.
+Esta feature valida el mecanismo de autenticación de la plataforma para todos los tipos de usuario: Administrador, Director, Coordinador, Voluntario y Usuario donante. Cubre tanto los flujos exitosos como los negativos (credenciales incorrectas, campos vacíos, intentos de acceso sin autenticación) y verifica que cada rol accede únicamente a los módulos que le corresponden según el modelo RBAC.
 
 **Escenarios incluidos:**
 
@@ -51,16 +50,15 @@ Esta feature valida el mecanismo de autenticación de la plataforma para todos l
 | 9 | Redirección sin autenticación | @login | Verifica que /admin-home/donations/reports redirige a /login |
 | 10–13 | Verificación de acceso según rol (esquema) | @smoke @login | Comprueba la matriz de permisos: qué módulo puede ver cada rol y qué módulo le está restringido |
 
-**Requisitos no funcionales cubiertos:** Seguridad (acceso por roles), usabilidad (mensajes de error claros).
+**Requisitos no funcionales cubiertos:** RNF-TRAN-02 (seguridad y cifrado — acceso por HTTPS), RNF-TRAN-03 (usabilidad — mensajes de error claros).
 
 ---
 
 ### 2.2 Feature: Gestión de usuarios (`gestion_usuarios.feature`)
 
-**Historia de Usuario (HU-02):**  
+**Requisito funcional:** RF-TRAN-01 — Gestión de Autenticación y Roles (ciclo de vida de cuentas)  
+**Historia de Usuario:** HU-02  
 > "Como administrador de la Fundación Huellas del Catatumbo, quiero crear, editar y desactivar usuarios para controlar quién accede a la plataforma y con qué permisos."
-
-**Casos de Uso cubiertos:** CU-02
 
 **Descripción general:**  
 Esta feature cubre el ciclo completo de gestión del ciclo de vida de un usuario desde la perspectiva del administrador: alta de nuevos usuarios, validación de datos duplicados, búsqueda en el listado y desactivación. También verifica que los permisos asignados al crear un usuario son respetados en tiempo de ejecución.
@@ -78,19 +76,18 @@ Esta feature cubre el ciclo completo de gestión del ciclo de vida de un usuario
 | 7 | Listado con al menos un registro | @usuarios | Verifica que la tabla de usuarios carga datos reales |
 | 8–10 | Asignación de permisos por rol (esquema) | @smoke @usuarios | Comprueba que Director, Coordinador y Voluntario tienen acceso correcto tras su creación |
 
-**Requisitos no funcionales cubiertos:** Integridad de datos, control de acceso, trazabilidad de cambios en cuentas de usuario.
+**Requisitos no funcionales cubiertos:** Integridad de datos, control de acceso RBAC, trazabilidad de cambios en cuentas de usuario.
 
 ---
 
 ### 2.3 Feature: Portal del usuario donante (`portal_usuario.feature`)
 
-**Historia de Usuario (HU-03):**  
+**Requisito funcional:** RF-TRAN-06 — Consulta de Historial Personalizado (Donante)  
+**Historia de Usuario:** HU-03  
 > "Como usuario donante registrado en la Fundación Huellas del Catatumbo, quiero acceder a mi panel personal para visualizar y gestionar mis donaciones y perfil."
 
-**Casos de Uso cubiertos:** CU-03
-
 **Descripción general:**  
-Esta feature cubre el portal privado del ciudadano donante (`/user-home`). Valida el acceso al dashboard con estadísticas personales, la visualización y filtrado del historial de donaciones, la edición de datos del perfil, el acceso al formulario de cambio de contraseña, la navegación a las secciones clave del panel y el cierre de sesión. También verifica que el portal está protegido (requiere autenticación).
+Esta feature cubre el portal privado del ciudadano donante (`/user-home`). Valida el acceso al dashboard con estadísticas personales, la visualización y filtrado del historial de donaciones, la edición de datos del perfil, el acceso al formulario de cambio de contraseña, la navegación a las secciones clave del panel y el cierre de sesión. También verifica que el portal está protegido (requiere autenticación), cumpliendo con el requisito de privacidad que protege la identidad del donante y oculta datos de terceros.
 
 **Escenarios incluidos:**
 
@@ -108,16 +105,15 @@ Esta feature cubre el portal privado del ciudadano donante (`/user-home`). Valid
 | 10 | Redirección sin autenticación | @portal_donante | Verifica que /user-home redirige a /login si no hay sesión |
 | 11–14 | Acceso a secciones (esquema) | @smoke @portal_donante | Comprueba All Donations, Edit Profile, Change Password, Support Tickets |
 
-**Requisitos no funcionales cubiertos:** Privacidad (acceso protegido), usabilidad (datos precargados), trazabilidad personal (historial individual de donaciones).
+**Requisitos no funcionales cubiertos:** RNF-TRAN-02 (privacidad — acceso protegido), RNF-TRAN-03 (usabilidad — datos precargados y navegación intuitiva).
 
 ---
 
 ### 2.4 Feature: Informe y consulta de donaciones (`donaciones.feature`)
 
-**Historia de Usuario (HU-04):**  
+**Requisito funcional:** RF-TRAN-07 — Generación de Reportes de Transparencia  
+**Historia de Usuario:** HU-04  
 > "Como coordinador de la Fundación Huellas del Catatumbo, quiero consultar y filtrar los informes de donaciones para monitorear el estado y los totales de los recursos recibidos."
-
-**Casos de Uso cubiertos:** CU-04
 
 **Descripción general:**  
 Esta feature cubre el módulo de informes de donaciones del panel administrativo (`/admin-home/donations/reports`). Verifica la visualización de totales, la aplicación de filtros por período y pasarela de pago, la exportación a CSV, la navegación entre las pestañas del informe (Donations, Top campaigns, Top donors) y que cada vista muestra datos reales cargados desde la plataforma.
@@ -135,16 +131,15 @@ Esta feature cubre el módulo de informes de donaciones del panel administrativo
 | 7 | Pestaña "Top donors" | @donaciones | Selecciona pestaña y verifica que se activa o muestra tabla de donantes |
 | 8–10 | Navegación entre pestañas (esquema) | @smoke @donaciones | Prueba Donations, Top campaigns y Top donors verificando activación de cada pestaña |
 
-**Requisitos no funcionales cubiertos:** Rendimiento (carga de datos reales en < 10 s), trazabilidad financiera (exportación CSV), usabilidad (filtros interactivos).
+**Requisitos no funcionales cubiertos:** RNF-TRAN-01 (rendimiento — carga de datos reales en < 10 s), trazabilidad financiera (exportación CSV), RNF-TRAN-03 (usabilidad — filtros interactivos).
 
 ---
 
 ### 2.5 Feature: Trazabilidad del ciclo de vida de las donaciones (`trazabilidad.feature`)
 
-**Historia de Usuario (HU-05):**  
+**Requisito funcional:** RF-TRAN-04 — Gestión de Flujo de Estados (Trazabilidad)  
+**Historia de Usuario:** HU-05  
 > "Como usuario de la Fundación Huellas del Catatumbo, quiero consultar el estado y la analítica de las donaciones para conocer el impacto y el ciclo de vida del proceso de distribución."
-
-**Casos de Uso cubiertos:** CU-06
 
 **Descripción general:**  
 Esta feature cubre el módulo de analítica de donaciones (`/admin-home/donations/analytics`). Verifica la visualización del funnel de donaciones (etapas: Visitors → Viewed → Clicked → Started → Completed), el historial de datos en cohortes de retención, el estado actual de las métricas clave y la consulta por código de referencia. Los escenarios negativos (código inexistente, campo vacío, actualización de estado) son validados de forma flexible dado que el módulo es de consulta/solo-lectura.
@@ -166,42 +161,58 @@ Esta feature cubre el módulo de analítica de donaciones (`/admin-home/donation
 
 ---
 
-## 3. Cobertura por tag
+## 3. Cobertura por requisito funcional (RF-TRAN)
+
+| Requisito | Descripción | Cobertura E2E | Feature que lo prueba |
+|---|---|---|---|
+| RF-TRAN-01 | Gestión de Autenticación y Roles | ✅ Completa | autenticacion.feature + gestion_usuarios.feature |
+| RF-TRAN-02 | Registro de Donaciones con ID Único | ⚠️ Backend (PHPUnit) | — |
+| RF-TRAN-03 | Control de Inventario y Clasificación | ⚠️ Backend (PHPUnit) | — |
+| RF-TRAN-04 | Gestión de Flujo de Estados | ✅ Analítica web | trazabilidad.feature |
+| RF-TRAN-05 | Carga de Evidencias Fotográficas | ⚠️ Backend (PHPUnit) | — |
+| RF-TRAN-06 | Consulta de Historial del Donante | ✅ Completa | portal_usuario.feature |
+| RF-TRAN-07 | Generación de Reportes | ✅ Parcial (CSV) | donaciones.feature |
+
+> Los requisitos RF-TRAN-02, RF-TRAN-03 y RF-TRAN-05 corresponden a lógica de negocio del backend (transacciones atómicas, motor de estados, almacenamiento de imágenes) validada mediante la suite PHPUnit (LogisticsTrackingTest.php — 15 pruebas, 38 aserciones).
+
+---
+
+## 4. Cobertura por tag
 
 | Tag | Escenarios cubiertos | Propósito |
 |---|---|---|
 | `@smoke` | 23 | Pruebas críticas de regresión rápida (flujos principales) |
-| `@login` | 13 | Autenticación y control de acceso por rol |
-| `@usuarios` | 10 | CRUD de cuentas de usuario administrativo |
-| `@portal_donante` | 14 | Portal privado del ciudadano donante |
-| `@donaciones` | 10 | Informes financieros y exportación de datos |
-| `@trazabilidad` | 10 | Analítica del ciclo de vida de donaciones |
+| `@login` | 13 | RF-TRAN-01: Autenticación y control de acceso por rol |
+| `@usuarios` | 10 | RF-TRAN-01: CRUD de cuentas de usuario administrativo |
+| `@portal_donante` | 14 | RF-TRAN-06: Portal privado del ciudadano donante |
+| `@donaciones` | 10 | RF-TRAN-07: Informes financieros y exportación de datos |
+| `@trazabilidad` | 10 | RF-TRAN-04: Analítica del ciclo de vida de donaciones |
 | `@negativo` | 8 | Validaciones y manejo de errores |
 
 ---
 
-## 4. Roles de usuario cubiertos
+## 5. Roles de usuario cubiertos
 
-| Rol | URL de login | Módulos probados |
-|---|---|---|
-| `super_admin` (Administrador) | `/login/admin` | Todos los módulos del panel |
-| `director_fundorex` (Director) | `/login/admin` | Donaciones, Trazabilidad, Usuarios (lectura) |
-| `coordinador_ocana` (Coordinador) | `/login/admin` | Logistics Manage, Donaciones (informes) |
-| `voluntario_catatumbo` (Voluntario) | `/login/admin` | Route Tracking (Logistics) |
-| `antuan23` (Usuario donante) | `/login` | Portal personal `/user-home` |
+| Rol | URL de login | RF-TRAN relacionado | Módulos probados |
+|---|---|---|---|
+| `super_admin` (Administrador) | `/login/admin` | RF-TRAN-01 | Todos los módulos del panel |
+| `director_fundorex` (Director) | `/login/admin` | RF-TRAN-01 | Donaciones, Trazabilidad, Usuarios (lectura) |
+| `coordinador_ocana` (Coordinador) | `/login/admin` | RF-TRAN-01, RF-TRAN-04, RF-TRAN-07 | Logistics Manage, Donaciones (informes) |
+| `voluntario_catatumbo` (Voluntario) | `/login/admin` | RF-TRAN-01 | Route Tracking (Logistics) |
+| `antuan23` (Usuario donante) | `/login` | RF-TRAN-06 | Portal personal `/user-home` |
 
 ---
 
-## 5. Estructura del proyecto
+## 6. Estructura del proyecto
 
 ```
 src/
 ├── features/                     ← Gherkin (lenguaje natural en español)
-│   ├── autenticacion.feature     → HU-01 / CU-01
-│   ├── gestion_usuarios.feature  → HU-02 / CU-02
-│   ├── portal_usuario.feature    → HU-03 / CU-03
-│   ├── donaciones.feature        → HU-04 / CU-04
-│   └── trazabilidad.feature      → HU-05 / CU-06
+│   ├── autenticacion.feature     → RF-TRAN-01
+│   ├── gestion_usuarios.feature  → RF-TRAN-01
+│   ├── portal_usuario.feature    → RF-TRAN-06
+│   ├── donaciones.feature        → RF-TRAN-07
+│   └── trazabilidad.feature      → RF-TRAN-04
 ├── pages/                        ← Page Object Model (selectores reales del DOM)
 │   ├── BasePage.ts
 │   ├── LoginPage.ts
@@ -219,7 +230,7 @@ src/
 │   └── portal_usuario.steps.ts
 ├── support/
 │   ├── world.ts                  ← Contexto compartido entre pasos
-│   ├── hooks.ts                  ← Before/After: capturas y vídeos de fallos
+│   ├── hooks.ts                  ← Before/After: capturas y vídeos de cada escenario
 │   └── evidence-manager.ts      ← Gestión de carpetas de evidencias
 └── fixtures/
     └── credenciales.ts           ← Credenciales por rol (via .env)
@@ -230,26 +241,24 @@ reports/
 └── REPORTE_TRAZABILIDAD_REQUISITOS.md  ← Este documento
 
 test-results/evidencias/
-└── 2026-06-24_04-22-36/         ← Única ejecución limpia (57/57 ✅)
-    ├── CU-01_Autenticacion/
-    ├── CU-02_Gestion_Usuarios/
-    ├── CU-03_Portal_Donante/
-    ├── CU-04_Donaciones/
-    └── CU-06_Trazabilidad/
+└── 2026-06-24_04-22-36/         ← Ejecución limpia (57/57 ✅)
+    ├── CU-01_Autenticacion/     → RF-TRAN-01
+    ├── CU-02_Gestion_Usuarios/  → RF-TRAN-01
+    ├── CU-03_Portal_Donante/    → RF-TRAN-06
+    ├── CU-04_Donaciones/        → RF-TRAN-07
+    └── CU-06_Trazabilidad/      → RF-TRAN-04
 ```
 
 ---
 
-## 6. Evidencias generadas
+## 7. Evidencias generadas
 
 Las evidencias de la ejecución se encuentran en:
 `test-results/evidencias/2026-06-24_04-22-36/`
 
-Al ser todos los tests exitosos (0 fallos), las carpetas de screenshots y vídeos están vacías por diseño: el framework solo persiste evidencia visual de los escenarios que **fallan**.
-
-El reporte HTML interactivo con el detalle de cada paso ejecutado está disponible en:
+Cada escenario genera un screenshot (`PASS_*.png`) y un vídeo (`PASS_*.webm`) independientemente de su resultado. El reporte HTML interactivo con el detalle de cada paso ejecutado está disponible en:
 `reports/html-report/index.html`
 
 ---
 
-*Generado automáticamente como parte del TFM — Erika / UNIR 2026*
+*Generado como parte del TFM — Erika Lozano Ramírez / Antuan Jácome Rincón — UNIR 2026*
