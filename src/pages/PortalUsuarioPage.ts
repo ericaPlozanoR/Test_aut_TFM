@@ -23,7 +23,7 @@ export class PortalUsuarioPage extends BasePage {
   private readonly linkVerActividad    = 'a[href*="user-home/donations"]';
 
   // ── Historial donaciones (/user-home/donations) ────────────────────────────
-  private readonly campoBusqueda       = 'input[placeholder="Search donations..."]';
+  private readonly campoBusqueda       = 'input[placeholder="Buscar donaciones..."], input[placeholder="Search donations..."]';
   private readonly botonFiltro         = '#donation-filter-toggle';
   private readonly radioEstado         = 'input[name="status_choice"]';
   private readonly accionDonacion      = 'button.donation-action-toggle';
@@ -120,6 +120,8 @@ export class PortalUsuarioPage extends BasePage {
   async tieneListaDonaciones(): Promise<boolean> {
     const texto = await this.page.locator('body').innerText();
     return (
+      texto.includes('Mis Donaciones') ||
+      texto.includes('Historial de Donaciones') ||
       texto.includes('All Donations') ||
       texto.includes('Total Donations') ||
       texto.includes('Donation')
@@ -128,7 +130,10 @@ export class PortalUsuarioPage extends BasePage {
 
   async tieneResumenDonaciones(): Promise<boolean> {
     const texto = await this.page.locator('body').innerText();
-    return texto.includes('Total Donations') || texto.includes('This Month') || texto.includes('Pending');
+    return (
+      texto.includes('Total Donado') || texto.includes('Este Mes') || texto.includes('Pendientes') ||
+      texto.includes('Total Donations') || texto.includes('This Month') || texto.includes('Pending')
+    );
   }
 
   async contarDonacionesVisibles(): Promise<number> {

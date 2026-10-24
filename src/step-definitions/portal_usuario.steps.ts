@@ -71,7 +71,7 @@ Then('debería ver la sección de historial de donaciones', async function (this
 
 Then('debería ver el resumen de mis totales de donación', async function (this: CustomWorld) {
   const tieneResumen = await this.portalUsuarioPage!.tieneResumenDonaciones();
-  expect(tieneResumen, 'Debería ver el resumen de totales (Total Donations / This Month)').toBe(true);
+  expect(tieneResumen, 'Debería ver el resumen de totales (Total Donado / Este Mes)').toBe(true);
 });
 
 Then('debería ver al menos una donación registrada en el historial', async function (this: CustomWorld) {

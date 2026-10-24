@@ -88,8 +88,8 @@ Característica: Portal del usuario donante
     Entonces el cuerpo de la página debería contener el texto "<titulo_esperado>"
 
     Ejemplos:
-      | ruta                                     | titulo_esperado  |
-      | /user-home/donations                     | All Donations    |
-      | /user-home/edit-profile                  | Edit Profile     |
-      | /user-home/change-password               | Change Password  |
-      | /user-home/support-tickets               | Support Tickets  |
+      | ruta                                     | titulo_esperado     |
+      | /user-home/donations                     | Mis Donaciones      |
+      | /user-home/edit-profile                  | Editar Perfil       |
+      | /user-home/change-password               | Cambiar Contraseña  |
+      | /user-home/support-tickets               | Support Tickets     |

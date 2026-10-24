@@ -22,13 +22,13 @@ export class DashboardPage extends BasePage {
   // ── User portal ────────────────────────────────────────────────────────────
   private readonly userNavLink      = 'a[href*="user-home"]';
 
-  // Mapa: nombre semántico en español → texto REAL del botón en la interfaz
-  private readonly menuMap: Record<string, string> = {
+  // Mapa: nombre semántico en español → texto(s) REAL(es) del botón en la interfaz
+  private readonly menuMap: Record<string, string | string[]> = {
     usuarios:      'Users Manage',
     'gestión usuarios': 'Users Manage',
     donaciones:    'Donation',
     reportes:      'Donation',    // Reports está bajo Donation
-    acopios:       'Logistics Manage',
+    acopios:       ['Logística', 'Logistics Manage'],  // renombrado a "Logística" (oct-2026)
     trazabilidad:  'Donation',
     voluntarios:   'Volunteers',
     comunidad:     'Community',
@@ -76,9 +76,13 @@ export class DashboardPage extends BasePage {
   async esMenuVisible(opcion: string): Promise<boolean> {
     const realText = this.menuMap[opcion.toLowerCase()];
     if (!realText) return false;
+    const selector = ([] as string[])
+      .concat(realText)
+      .map(t => `${this.adminNavItem}:has-text("${t}"), a.nav-link:has-text("${t}")`)
+      .join(', ');
     try {
       await this.page
-        .locator(`${this.adminNavItem}:has-text("${realText}"), a.nav-link:has-text("${realText}")`)
+        .locator(selector)
         .first()
         .waitFor({ state: 'visible', timeout: 4_000 });
       return true;
